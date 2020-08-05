@@ -1,0 +1,26 @@
+class Solution {
+public:
+    bool isSubsequence(string s, string t) {
+        if(s.length()>t.length())
+            return false;
+        if(s.length()==0)
+            return true;
+        unordered_map<char,vector<int>> m;
+        for(int i=0;i<t.length();i++)
+            m[t[i]].push_back(i);
+        int prev=-1;
+        for(auto &c:s)
+        {
+            if(m.find(c)==m.end())
+                return false;
+            auto v=m[c];
+            auto index=upper_bound(v.begin(),v.end(),prev);
+            if((index)==v.end())
+                return false;
+            if(prev>=(*index))
+                return false;
+            prev=*index;
+        }
+        return true;
+    }
+};
