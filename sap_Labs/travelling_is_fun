@@ -1,0 +1,87 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+class du{
+public:
+    vector<int> par,sz;
+    du(int n):par(n),sz(n,1){
+     for(int i=0;i<n;i++)
+        par[i]=i;
+    }
+    int find1(int u)
+    {
+        while(par[u]!=u)
+        {
+            par[u]=par[par[u]];
+            u=par[u];
+        }
+        return u;
+    }
+    void union1(int u,int v)
+    {
+        u=find1(u);
+        v=find1(v);
+        if(u==v) return;
+        if(sz[u]<sz[v])
+        {
+            par[u]=v;
+            sz[v]+=sz[u];
+            sz[u]=0;
+        }
+        else
+        {
+            par[v]=u;
+            sz[u]+=sz[v];
+            sz[v]=0;
+        }
+    }
+};
+void util(bool ispos[],int origin[],int destin[],int q,int n,int g)
+{
+    du d(n);
+    for(int k=g+1;k<=n;k++)
+     for(int x=2*k;x<=n;x+=k)
+     {
+       d.union1(x-1,x-k-1);
+     }
+     for(int i=0;i<q;i++)
+     {
+         if(d.find1(origin[i]-1)==d.find1(destin[i]-1))
+            ispos[i]=true;
+         else
+            ispos[i]=false;
+     }
+     for(int i=0;i<q;i++)
+        if(ispos[i])
+        cout<<"1"<<endl;
+        else
+            cout<<"0"<<endl;
+}
+
+int main()
+{
+  int n,g,q,q1;
+  cout<<"enter n,the total number of cities: ";
+  cin>>n;
+  cout<<endl;
+  cout<<"enter g,the thresold value: ";
+  cin>>g;
+  cout<<endl;
+  cout<<"enter the size of origin cities: ";
+  cin>>q;
+  int origin[q],destin[q];
+  cout<<endl;
+  cout<<"enter orogins"<<endl;
+  for(int i=0;i<q;i++)
+    cin>>origin[i];
+  cout<<endl;
+  cout<<"enter the size of destin: ";
+  cin>>q1;
+  cout<<endl;
+  cout<<"enter destins"<<endl;
+  for(int i=0;i<q;i++)
+    cin>>destin[i];
+  bool ispos[q];
+  util(ispos,origin,destin,q,n,g);
+  return 0;
+}
