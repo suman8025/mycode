@@ -1,0 +1,43 @@
+#include<iostream>
+#include<cstring>
+#include<stack>
+#include<map>
+#include<algorithm>
+using namespace std;
+int dp[100][100];
+int util(int index,int prev,string &s,vector<int> v[])
+{
+    if(index==s.length())
+        return 1;
+        if(dp[index][prev]!=-1)
+            return dp[index][prev];
+
+   int c=s[index]-'a',ans=0;
+   for(int i=0;i<v[c].size();i++)
+   {
+       if(prev<v[c][i])
+        ans=ans+util(index+1,v[c][i],s,v);
+   }
+   dp[index][prev]=ans;
+   return ans;
+}
+void solve(vector<string> &A,string &s)
+{
+    vector<int> v[26];
+    memset(dp,-1,sizeof(dp));
+    for(int i=0;i<A.size();i++)
+    {
+        for(int j=0;j<A[i].length();j++)
+            v[A[i][j]-'a'].push_back(j+1);
+    }
+cout<<util(0,0,s,v);
+}
+int main()
+{
+ vector<string> A;
+ A.push_back("afsdc");
+ A.push_back("aeeeedc");
+ A.push_back("ddegerg");
+ string s="ae";
+ solve(A,s);
+}
