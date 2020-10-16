@@ -1,0 +1,79 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define INF 99999999
+
+int dist[101][101][11];
+int dp[11][1024];
+vector<pair<int,int>> coins;
+vector<pair<int,int>> dir={{1,0},{-1,0},{0,1},{0,-1}};
+int limit,len;
+
+bool issafe(int x, int y, int r, int c){
+	return (x>=0 && x<r && y>=0 && y<c);
+}
+
+void getdist(vector<vector<int>>& mat, int idx)
+{
+	int n=mat.size(),m=mat[0].size();
+	bool vis[101][101];
+	memset(vis,false,sizeof(vis));
+	int x=coins[idx].first, y=coins[idx].second;
+	queue<pair<int,int>> q;
+	q.push({x,y});
+	for(int i=0;i<101;i++) for(int j=0;j<101;j++) dist[i][j][idx]=INF;
+	vis[x][y]=true;
+	dist[x][y][idx]=0;
+	while(!q.empty()){
+		auto p=q.front(); q.pop();
+		//int r=p.f,c=p.s;
+		for(int i=0;i<4;i++){
+			int r=p.first+dir[i].first,c=p.second+dir[i].second;
+			if(issafe(r,c,n,m) && mat[r][c]!=1 && !vis[r][c]){
+				vis[r][c]=true;
+				dist[r][c][idx]=dist[p.first][p.second][idx]+1;
+				q.push({r,c});
+			}
+		}
+	}
+}
+
+int solve(int idx, int mask, int ax, int ay)
+{
+	if(mask==limit) return dist[ax][ay][idx];
+	if(dp[idx][mask]!=-1) return dp[idx][mask];
+	int res=INT_MAX;
+	for(int i=0;i<len;i++){
+		if((mask & (1<<i)) == 0){
+			int newmask=mask|(1<<i);
+			res=min(res,solve(i,newmask,ax,ay)+dist[coins[i].first][coins[i].second][idx]);
+		}
+	}
+	//cout<<res<<endl;
+	return dp[idx][mask]=res;
+}
+
+int main(){
+	int n,m; cin>>n>>m;
+	vector<vector<int>> mat(n,vector<int>(m,0));
+	coins.clear();
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+			int a; cin>>a;
+			mat[i][j]=a;
+			if(a==2) coins.push_back({i,j});
+		}
+	}
+	int ax,ay; cin>>ax>>ay;
+	int bx=0,by=0;
+	memset(dp,-1,sizeof(dp));
+	coins.insert(coins.begin(),{0,0});
+	len=coins.size();
+	//cout<<len<<endl;
+	limit=(1<<len)-1;
+	//cout<<limit<<endl;
+	for(int i=0;i<len;i++) getdist(mat,i);
+	int ans=solve(0,1,ax,ay);
+	if(ans>=INF) cout<<"-1"<<endl;
+	else cout<<ans<<endl;
+	return 0;
+}
