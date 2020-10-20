@@ -1,0 +1,31 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef pair<int,pair<int,int>> pr;
+int dp[101][10001];
+int util(int idx,int curr,pr shop[],int s)
+{
+    if(curr==0)
+        return 0;
+    if(idx==s)
+        return 10000;
+        if(dp[idx][curr]!=-1)
+            return dp[idx][curr];
+    int c=curr,res=10000;
+    for(int i=0;i<=(shop[idx].first) && c-i>=0;i++)
+    {
+        int price=i*(shop[idx].second.first)+((i>0)?(shop[idx].second.second):0);
+        res=min(res,price+util(idx+1,c-i,shop,s));
+    }
+    return dp[idx][curr]=res;
+}
+int main()
+{
+    int n,s,q,p,d;
+    memset(dp,-1,sizeof(dp));
+    cin>>n;
+    cin>>s;
+    pr shop[s];
+    for(int i=0;i<s;i++)
+        cin>>shop[i].first>>shop[i].second.first>>shop[i].second.second;
+    cout<<util(0,n,shop,s);
+}
