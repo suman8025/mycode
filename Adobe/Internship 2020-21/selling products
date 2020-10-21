@@ -1,0 +1,32 @@
+#include<bits/stdc++.h>
+using namespace std;
+int util(int a[],int n,int m)
+{
+    unordered_map<int,int> mp;
+    for(int i=0;i<n;i++)
+        mp[a[i]]++;
+    vector<int> v;
+    for(auto &c:mp)
+        v.push_back(c.second);
+    sort(v.begin(),v.end());
+    int count1=0,i=0,sz=v.size();
+    while(m>0 && i<sz)
+    {
+        int a=min(m,v[i]);
+        m-=a;
+        if(a==v[i])
+            count1++;
+        i++;
+    }
+    return sz-count1;
+}
+
+int main()
+{
+    int n,m;
+    cin>>n>>m;
+    int a[n];
+    for(int i=0;i<n;i++)
+        cin>>a[i];
+    cout<<util(a,n,m)<<endl;
+}
