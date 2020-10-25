@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int maxSumSubmatrix(vector<vector<int>>& matrix, int k) {
+        int m=matrix.size();
+        int n=matrix[0].size();
+        int maxsum=INT_MIN;
+        for(int left=0;left<n;left++)
+        {
+            vector<int> row(m,0);
+            for(int right=left;right<n;right++)
+            {
+                for(int i=0;i<m;i++)
+                    row[i]+=matrix[i][right];
+                set<int> s;
+                s.insert(0);
+                int cursum=0;
+                for(int i=0;i<m;i++)
+                {
+                    cursum+=row[i];
+                    auto it=s.lower_bound(cursum-k);
+                    if(it!=s.end())
+                        maxsum=max(maxsum,cursum-(*it));
+                    s.insert(cursum);
+                }
+            }
+            
+        }
+        return maxsum;
+    }
+};
