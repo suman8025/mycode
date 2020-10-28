@@ -1,0 +1,63 @@
+#include<bits/stdc++.h>
+#define ml 200000
+using namespace std;
+int spf[ml+1];
+unordered_map<int,int> mp;
+void seive()
+{
+    spf[1]=1;
+    for(int i=2;i<ml;i++)
+        spf[i]=i;
+    for(int i=4;i<ml;i+=2)
+        spf[i]=2;
+    for(int i=3;i*i<ml;i++)
+    {
+        if(spf[i]==i)
+        {
+            for(int j=i*i;j<ml;j+=i)
+                if(spf[j]==j)
+                spf[j]=i;
+        }
+    }
+}
+void primefactor(int n)
+{
+    unordered_set<int> s;
+    while(n!=1)
+    {
+        s.insert(spf[n]);
+        n=n/spf[n];
+    }
+    for(auto &a:s)
+        mp[a]++;
+
+}
+void switching(vector<int> states)
+{
+    int n=states.size();
+    for(auto &x:mp)
+    {
+        if(x.second %2==0)
+            continue;
+        int i=x.first;
+        for(int k=i;k<=n;k+=i)
+            states[k-1]=1-states[k-1];
+    }
+    for(int i=0;i<n;i++)
+        cout<<states[i]<<" ";
+}
+int main()
+{
+ int n,m;
+ cin>>n>>m;
+ vector<int> states(n,-1);
+ vector<int> num(m);
+ for(int i=0;i<n;i++)
+    cin>>states[i];
+ for(int i=0;i<m;i++)
+    cin>>num[i];
+  seive();
+  for(int i=0;i<m;i++)
+    primefactor(num[i]);
+    switching(states);
+}
