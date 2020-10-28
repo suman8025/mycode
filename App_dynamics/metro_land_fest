@@ -1,0 +1,43 @@
+#include<bits/stdc++.h>
+using namespace std;
+int found(int l,int x,int m,int y)
+{
+    return (abs(l-x)+abs(m-y));
+}
+int util(vector<int> numpeople,vector<int> x,vector<int> y,int n)
+{
+    vector<int> xx,yy;
+    for(int i=0;i<n;i++)
+    {
+         for(int j=0;j<numpeople[i];j++)
+         {
+             xx.push_back(x[i]);
+             yy.push_back(y[i]);
+         }
+    }
+    sort(xx.begin(),xx.end());
+    sort(yy.begin(),yy.end());
+    int l=xx[xx.size()/2];
+    int m=yy[yy.size()/2];
+    int res=0;
+    for(int i=0;i<n;i++)
+    {
+        res+=(numpeople[i]*(found(l,x[i],m,y[i])));
+    }
+    return res;
+}
+int main()
+{
+    int n;
+    cin>>n;
+    vector<int> numpeople,x,y;
+    for(int i=0;i<n;i++)
+    {
+        int a,b,c;
+        cin>>a>>b>>c;
+        numpeople.push_back(a);
+        x.push_back(b);
+        y.push_back(c);
+    }
+    cout<<util(numpeople,x,y,n)<<endl;
+}
