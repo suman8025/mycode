@@ -1,0 +1,24 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+  int cartrige,dollar,recycle,perkcost;
+  cin>>cartrige>>dollar>>recycle>>perkcost;
+  long start=0,end1=cartrige,ans;
+  while(start<=end1)
+  {
+      long mid=start+(end1-start)/2;
+      long curdollar=dollar+recycle*(cartrige-mid);
+      if(curdollar>=(long)(perkcost*mid))
+      {
+          ans=mid;
+          start=mid+1;
+      }
+      else
+      {
+          end1=mid-1;
+      }
+  }
+  cout<<ans;
+}
