@@ -1,0 +1,43 @@
+class Solution {
+public:
+    vector<int> parent;
+    vector<int> dis;
+    vector<int> l;
+    vector<int> visited;
+    vector<vector<int>> ans;
+    vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
+        vector<int> adj[n];
+        parent.resize(n,0);
+        dis.resize(n,0);
+        visited.resize(n,false);
+        l.resize(n,0);
+        for(auto &v:connections)
+        {
+            adj[v[0]].push_back(v[1]);
+            adj[v[1]].push_back(v[0]);
+        }
+        parent[0]=-1;
+        dfs(0,0,0,adj);
+        return ans;
+    }
+    void dfs(int u,int p,int time,vector<int> adj[])
+    {
+        visited[u]=true;
+        parent[u]=p;
+        dis[u]=l[u]=time+1;
+        for(int i=0;i<adj[u].size();i++)
+        {
+            int v=adj[u][i];
+            if(visited[v]==false)
+            {
+                dfs(v,u,time+1,adj);
+                l[u]=min(l[u],l[v]);
+                if(dis[u]<l[v])
+                    ans.push_back(vector<int>{u,v});
+            }
+            else if(parent[u]!=v)
+                l[u]=min(l[u],dis[v]);
+                
+        }
+    }
+};
