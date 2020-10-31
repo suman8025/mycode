@@ -1,0 +1,19 @@
+class Solution {
+public:
+    bool isSubtree(TreeNode* s, TreeNode* t) {
+        if(t==NULL)
+            return true;
+        if(s==NULL)
+            return false;
+        if(issame(s,t)) return true;
+        return isSubtree(s->left,t)||isSubtree(s->right,t);
+    }
+   bool issame(TreeNode* s,TreeNode* t)
+   {
+       if(s==NULL && t==NULL) return true;
+       if(s==NULL || t==NULL) return false;
+       if(s->val!=t->val) return false;
+       return issame(s->left,t->left) && issame(s->right,t->right);
+           
+   }
+};
