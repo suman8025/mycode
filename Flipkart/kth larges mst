@@ -1,0 +1,87 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef pair<int,int> ip;
+int f(int u,int parent[])
+{
+    while(parent[u]!=u)
+    {
+        parent[u]=parent[parent[u]];
+        u=parent[u];
+    }
+    return u;
+}
+void uni(int parent[],int sz[],int a,int b)
+{
+    if(sz[a]<sz[b])
+    {
+        parent[a]=b;
+        sz[b]+=sz[a];
+        sz[a]=0;
+    }
+    else
+    {
+        parent[b]=a;
+        sz[a]+=sz[b];
+        sz[b]=0;
+    }
+}
+int kruskal(int v,int e)
+{
+    int parent[v];
+    int sz[v];
+    for(int i=0;i<v;i++)
+    {
+        parent[i]=i;
+        sz[i]=1;
+    }
+    pair<int,ip> edges[e];
+    for(int i=0;i<e;i++)
+    {
+        int a,b,w;
+        cin>>a>>b>>w;
+        edges[i]={w,{a-1,b-1}};
+    }
+    sort(edges,edges+e);
+    int sum=0;
+
+   for(int i=0;i<e;i++)
+    {
+        int a=edges[i].second.first;
+        int b=edges[i].second.second;
+        int x=f(a,parent),y=f(b,parent);
+        if(x!=y)
+        {
+            sum+=edges[i].first;
+            //cout<<sum<<endl;
+            uni(parent,sz,x,y);
+        }
+        else
+            continue;
+    }
+
+    return sum;
+}
+int main() {
+ int n,k;
+ cin>>n>>k;
+ ip ve[n];
+ for(int i=0;i<n;i++)
+ {
+     int a,b;
+     cin>>a>>b;
+     ve[i].first=a;
+     ve[i].second=b;
+ }
+ priority_queue<ip,vector<ip>,greater<ip>> pq;
+ for(int i=0;i<n;i++)
+ {
+     int v=ve[i].first;
+     int e=ve[i].second;
+     int sum=kruskal(v,e);
+     pq.push({sum,i+1});
+     if(pq.size()>k)
+        pq.pop();
+ }
+ cout<<endl;
+ cout<<pq.top().second<<" "<<pq.top().first;
+}
