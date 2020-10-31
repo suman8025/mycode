@@ -1,0 +1,30 @@
+#include<bits/stdc++.h>
+using namespace std;
+int util(int a[],int n,int k)
+{
+    unordered_set<int> visited;
+    unordered_set<int> s;
+    int ans=0;
+    for(int i=0;i<n;i++)
+    {
+        if((visited.find(a[i])==visited.end()) && s.find(k-a[i])!=s.end())
+        {
+            ans++;
+            visited.insert(a[i]);
+            visited.insert(k-a[i]);
+        }
+        s.insert(a[i]);
+    }
+    return ans;
+}
+int main() {
+  int n;
+  cin>>n;
+  int a[n];
+  for(int i=0;i<n;i++)
+        cin>>a[i];
+  int k;
+  cin>>k;
+  cout<<util(a,n,k)<<endl;
+
+}
