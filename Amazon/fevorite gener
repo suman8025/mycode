@@ -1,0 +1,55 @@
+#include<bits/stdc++.h>
+using namespace std;
+void util(unordered_map<string,vector<string>> &users,unordered_map<string,vector<string>> &songs)
+{
+    unordered_map<string,string> stg;
+    for(auto &m:songs)
+    {
+        string g=m.first;
+        vector<string> v=m.second;
+        for(auto &s:v)
+            stg[s]=g;
+    }
+    unordered_map<string,vector<string>> mp;
+    for(auto &m:users)
+    {
+        string name=m.first;
+        vector<string> v=m.second;
+        int ans=0;
+        unordered_map<string,int> count;
+        for(auto &a:v)
+        {
+            count[stg[a]]++;
+            ans=max(ans,count[stg[a]]);
+        }
+        for(auto &c:count)
+        {
+            if(c.second==ans)
+                mp[name].push_back(c.first);
+        }
+
+    }
+    for(auto &m:mp)
+    {
+        cout<<m.first<<" :";
+        vector<string> v=m.second;
+        for(auto &s:v)
+            cout<<s<<" ";
+        cout<<endl;
+    }
+}
+int main() {
+    unordered_map<string,vector<string>> users;
+    users["David"] = {"song1", "song2", "song3", "song4", "song8"};
+    users["Emma"] = {"song5", "song6", "song7"};
+
+    unordered_map<string,vector<string>> songs;
+    songs["Rock"] = {"song1", "song3"};
+    songs["Dubstep"] = {"song7"};
+    songs["Techno"] = {"song2", "song4"};
+    songs["Pop"] = {"song5", "song6"};
+    songs["Jazz"] = {"song8", "song9"};
+    util(users,songs);
+
+
+}
