@@ -1,0 +1,103 @@
+// C++ program for the above approach
+#include<bits/stdc++.h>
+using namespace std;
+ 
+// Function to print the
+// required resultant array
+void sumOfKElements(int arr[], int n,
+                    int k)
+{
+     
+    // Reverse the array
+    bool rev = false;
+ 
+    if (k < 0)
+    {
+        rev = true;
+        k *= -1;
+        int l = 0, r = n - 1;
+ 
+        // Traverse the range
+        while (l < r) 
+        {
+            int tmp = arr[l];
+            arr[l] = arr[r];
+            arr[r] = tmp;
+            l++;
+            r--;
+        }
+    }
+ 
+    // Store prefix sum
+    int dp[n] = {0};
+    dp[0] = arr[0];
+ 
+    // Find the prefix sum
+    for(int i = 1; i < n; i++)
+    {
+        dp[i] += dp[i - 1] + arr[i];
+    }
+ 
+    // Store the answer
+    int ans[n] = {0};
+ 
+    // Calculate the answers
+    for(int i = 0; i < n; i++) 
+    {
+        if (i + k < n)
+            ans[i] = dp[i + k] - dp[i];
+        else
+        {
+             
+            // Count of remaining elements
+            int x = k - (n - 1 - i);
+ 
+            // Add the sum of all elements
+            // y times
+            int y = x / n;
+ 
+            // Add the remaining elements
+            int rem = x % n;
+ 
+            // Update ans[i]
+            ans[i] = dp[n - 1] - dp[i] + 
+                 y * dp[n - 1] + (rem - 1 >= 0 ?
+                   dp[rem - 1] : 0);
+        }
+    }
+ 
+    // If array is reversed print
+    // ans[] in reverse
+    if (rev)
+    {
+        for(int i = n - 1; i >= 0; i--) 
+        {
+            cout << ans[i] << " ";
+        }
+    }
+    else
+    {
+        for(int i = 0; i < n; i++) 
+        {
+            cout << ans[i] << " ";
+        }
+    }
+}
+ 
+// Driver Code
+int main()
+{
+     
+    // Given array arr[]
+    int arr[] = { 4, 2, -5, 11 };
+ 
+    int N = sizeof(arr) / sizeof(arr[0]);
+ 
+    // Given K
+    int K = 3;
+ 
+    // Function
+    sumOfKElements(arr, N, K);
+}
+ 
+// This code is contributed by SURENDRA_GANGWAR
