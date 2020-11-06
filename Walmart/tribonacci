@@ -1,0 +1,25 @@
+#include<bits/stdc++.h>
+using namespace std;
+int util(int n,int k,vector<vector<int>> &dp)
+{
+    if(n==1||n==0)
+        return 1;
+    if(n==2)
+        return 2;
+    if(dp[n][k]!=-1)
+        return dp[n][k];
+    int res=0;
+    if(k>0)
+    res=util(n-3,k-1,dp)+util(n-2,k,dp)+util(n-1,k,dp);
+    else
+        res=util(n-2,k,dp)+util(n-1,k,dp);
+    return dp[n][k]=res;
+}
+int main()
+{
+
+    int n,k;
+    cin>>n>>k;
+    vector<vector<int>> dp(n+1,vector<int>(k+1,-1));
+    cout<<util(n,k,dp)<<endl;
+}
