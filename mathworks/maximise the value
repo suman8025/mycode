@@ -1,0 +1,30 @@
+#include<bits/stdc++.h>
+using namespace std;
+int util(int a[],int n)
+{
+    int b[n],count=0;
+    for(int i=0;i<n;i++)
+        b[i]=a[i];
+    sort(b,b+n);
+    for(int i=2;i<n;i+=2)
+    {
+        a[i]=b[count++];
+    }
+    a[0]=b[count++];
+    for(int i=1;i<n;i+=2)
+        a[i]=b[count++];
+    for(int i=0;i<n;i++)
+        cout<<a[i]<<" ";
+
+}
+int main()
+{
+  int n;
+  cin>>n;
+  int a[n];
+  for(int i=0;i<n;i++)
+    cin>>a[i];
+
+  util(a,n);
+
+}
