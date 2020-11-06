@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+using namespace std;
+int maxNormalSubstring(string& P, string& Q,int K, int N)
+{
+     if (K == 0)
+		return 0;
+	int count = 0;
+	int left = 0, right = 0;
+	int ans = 0;
+	while (right < N) {
+		while (right < N && count <= K) {
+			int pos = P[right] - 'a';
+			if (Q[pos] == '0') {
+				if (count + 1 > K)
+					break;
+				else
+					count++;
+			}
+			right++;
+			if (count <= K)
+				ans = max(ans, right - left);
+		}
+
+		while (left < right) {
+			int pos = P[left] - 'a';
+			left++;
+			if (Q[pos] == '0')
+				count--;
+			if (count < K)
+				break;
+		}
+	}
+
+	return ans;
+}
+
+
+int main()
+{
+
+	string P = "giraffe", Q = "01111001111111111011111111";
+
+	int K = 2;
+
+	int N = P.length();
+
+	cout << maxNormalSubstring(P, Q, K, N);
+
+	return 0;
+}
