@@ -1,0 +1,29 @@
+#include <bits/stdc++.h>
+using namespace std;
+ 
+long long int arr[40];
+string Bit(int n, string s){
+	int i=39;
+	while(arr[i]>n) i--;
+	for(i; i>=0; i--)
+		if(arr[i]<=n) s+="1", n-=arr[i];
+		else s+="0";
+	return s;
+}
+ 
+int main() {
+	ios_base::sync_with_stdio(false);
+   	std::cin.tie(0);
+   	std::cout.tie(0);
+ 
+	arr[0]=1, arr[1]=2;
+	for(int i=2; i<40; i++)
+		arr[i]=arr[i-1]+arr[i-2];
+	int T,n;
+	cin>>T;
+	while(T--){
+		cin>>n;
+		string kuchu;
+		cout<<Bit(n,kuchu)<<"\n";
+	}
+}
