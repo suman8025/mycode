@@ -1,0 +1,21 @@
+string findRollOut(string s, long long arr[], int n)
+	{
+	    int l=s.length();
+	   int a[l+1];
+	   for(int i=0;i<=l;i++)
+	   a[i]=0;
+	   for(int i=0;i<l;i++)
+	   {
+	       a[0]++;
+	       a[arr[i]]-=1;
+	   }
+	   for(int i=1;i<l;i++)
+	   {
+	       a[i]+=a[i-1];
+	   }
+	   for(int i=0;i<l;i++)
+	   {
+	       s[i]=((s[i]-'a'+(a[i])%26))%26+97;
+	   }
+	   return s;
+	}
