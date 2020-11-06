@@ -1,0 +1,82 @@
+// C++ implementation of the approach
+#include <bits/stdc++.h>
+using namespace std;
+int getsum(int bit[], int ind)
+{
+	int sum = 0;
+	while (ind > 0) {
+		sum += bit[ind];
+		ind -= ind & (-ind);
+	}
+	return sum;
+}
+
+void update(int bit[], int n, int ind, int val)
+{
+	while (ind <= n) {
+		bit[ind] += val;
+		ind += ind & (-ind);
+	}
+}
+void convert(int arr[], int n)
+{
+	int temp[n];
+	for (int i = 0; i < n; i++)
+		temp[i] = arr[i];
+	sort(temp, temp + n);
+	for (int i = 0; i < n; i++) {
+		arr[i] = lower_bound(temp, temp + n, arr[i]) - temp + 1;
+	}
+}
+void util(int arr[], int n)
+{
+	convert(arr, n);
+	int BIT[n + 1];
+	for (int i = 1; i <= n; i++)
+		BIT[i] = 0;
+	int s_r[n], g_l[n];
+
+	for (int i = n - 1; i >= 0; i--) {
+		s_r[i] = getsum(BIT, arr[i] - 1);
+		update(BIT, n, arr[i], 1);
+	}
+
+	cout << "Smaller right: ";
+	for (int i = 0; i < n; i++)
+		cout << s_r[i] << " ";
+	cout << endl;
+
+	for (int i = 1; i <= n; i++)
+		BIT[i] = 0;
+	for (int i = 0; i < n; i++) {
+		g_l[i] = i - getsum(BIT, arr[i]);
+		update(BIT, n, arr[i], 1);
+	}
+
+	cout << "Greater left: ";
+
+	for (int i = 0; i < n; i++)
+		cout << g_l[i] << " ";
+    int maxi=0;
+    for(int i=1;i<n-1;i++)
+    {
+        if(abs(g_l[i]-s_r[i])>maxi)
+        {
+            maxi=abs(g_l[i]-s_r[i]);
+        }
+    }
+    cout<<endl;
+    cout<<maxi;
+}
+
+
+int main()
+{
+	int arr[] = {4,3,2,1};
+
+	int n = sizeof(arr) / sizeof(arr[0]);
+
+	util(arr, n);
+
+	return 0;
+}
