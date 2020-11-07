@@ -1,0 +1,32 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+  string s;
+  cin>>s;
+  int wendy=0,bob=0,lenw=0,lenb=0,flag1=0,flag2=0;
+  int n=s.length();
+  for(int i=0;i<n;)
+  {
+      lenw=0;
+      lenb=0;
+      while(i<n && s[i]=='w')
+      {
+          lenw++;
+          i++;
+      }
+      while(i<n && s[i]=='b')
+      {
+          lenb++;
+          i++;
+      }
+      if(lenw>=3)
+        wendy+=(lenw-2);
+      if(lenb>=3)
+        bob+=(lenb-2);
+  }
+  if(wendy>bob)
+    cout<<"wendy"<<endl;
+  else
+    cout<<"bob"<<endl;
+}
