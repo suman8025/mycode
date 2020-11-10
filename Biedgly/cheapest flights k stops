@@ -1,0 +1,56 @@
+#include<bits/stdc++.h>
+using namespace std;
+int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int K) {
+	vector<int> dist(n, INT_MAX);
+	dist[src] = 0;
+	int m = flights.size();
+	for (int i = 1; i <= K + 1; i++)
+	{
+		vector<int> vec = dist;
+		for (int i = 0; i < m; i++)
+		{
+			int u = flights[i][0], v = flights[i][1], w = flights[i][2];
+			if (dist[u] != INT_MAX && dist[u] + w < vec[v])
+				vec[v] = w + dist[u];
+		}
+		dist = vec;
+	}
+	if (dist[dst] != INT_MAX)
+		return dist[dst];
+	else
+		return -1;
+}
+int main()
+{
+	int n;
+	cin >> n;
+	string s;
+	cin >> s;
+	stringstream ss(s);
+	vector<vector<int>> flights;
+	string s1;
+	int count = 0;
+	vector<int> v;
+	while (getline(ss, s1, ','))
+	{
+		count++;
+		if (s1[0] == '[' || s1[s1.length() - 1] == ']')
+		{
+			if (s1[0] == '[')
+				v.push_back(stoi(s1.substr(1)));
+			else
+				v.push_back(stoi(s1.substr(0, s1.length() - 1)));
+		}
+		else
+			v.push_back(stoi(s1));
+		if (count == 3)
+		{
+			count = 0;
+			flights.push_back(v);
+			v.clear();
+		}
+	}
+	int src, dst, K;
+	cin >> src >> dst >> K;
+	cout << findCheapestPrice(n, flights, src, dst, K);
+}
