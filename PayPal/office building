@@ -1,0 +1,86 @@
+#include<iostream>
+#include<queue>
+#include<map>
+#include<cassert>
+#include<cstring>
+#include<climits>
+using namespace std;
+
+int w, h, N;
+map<pair<int,int>, int> dp;
+int row[] = {1, -1, 0, 0};
+int col[] = {0, 0, -1, 1};
+
+int val(int r, int s) {
+	if(w <= h)
+		return  r + w * s;
+	return h * r + s;
+}
+
+bool get(int mask, int i, int j) {
+	return (mask&(1<<val(i,j)));
+}
+
+int fun(int mask) {
+	int dist[w][h];
+	memset(dist, -1, sizeof dist);
+
+	int maxd = 0;
+	queue<pair<int,int>> q;
+
+	for(int i = 0; i < w; i++)
+		for(int j = 0; j < h; j++)
+			if(get(mask, i, j)) {
+				dist[i][j] = 0;
+				q.push({i, j});
+			}
+ 	assert(q.size() == N);
+
+	while(!q.empty()) {
+		int x = q.front().first;
+		int y = q.front().second;
+		maxd = max(maxd, dist[x][y]);
+		q.pop();
+
+		for(int d = 0; d < 4; d++) {
+			int u = x + row[d];
+			int v = y + col[d];
+
+			if(u >= w || v >= h || u < 0 || v < 0)
+				continue;
+			if(dist[u][v] == -1) {
+				dist[u][v] = dist[x][y] + 1;
+				q.push({u, v});
+			}
+		}
+	}
+
+	return maxd;
+}
+
+
+
+int util(int mask, int n) {
+	if(n == 0) {
+		return fun(mask);
+	}
+	if(dp.find({mask, n}) != dp.end()) {
+		return dp[{mask, n}];
+	}
+	int mind = INT_MAX;
+	for(int i = 0; i < w; i++)
+		for(int j = 0; j < h; j++)
+			if(!get(mask, i, j)) {
+				int val1 = util((mask|(1<<val(i, j))), n-1);
+				mind = min(mind, val1);
+			}
+	 dp[{mask, n}] = mind;
+	 return mind;
+}
+
+int main() {
+	while(cin >> w >> h >> N) {
+		dp.clear();
+		cout << util(0, N) << '\n';
+	}
+}
