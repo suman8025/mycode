@@ -1,0 +1,34 @@
+#include <bits/stdc++.h>
+using namespace std;
+int util(int arr[], int n,int i,int dp[])
+{
+    if(i==n)
+        return 0;
+    if(dp[i]!=-1)
+        return dp[i];
+    int res=INT_MAX;
+	for(int j=i;j<n;j++)
+    {
+        if(__gcd(arr[i],arr[j])>1)
+        {
+          int c=util(arr,n,j+1,dp);
+          if(c==INT_MAX) res=min(res,c);
+          else
+          res=min(res,1+util(arr,n,j+1,dp));
+        }
+    }
+
+    return dp[i]=res;
+}
+int main()
+{
+	int n;
+	cin>>n;
+	int a[n];
+	for(int i=0;i<n;i++)
+        cin>>a[i];
+    int dp[n];
+    memset(dp,-1,sizeof(dp));
+    cout<<util(a,n,0,dp);
+	return 0;
+}
