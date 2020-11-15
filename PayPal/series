@@ -1,0 +1,40 @@
+package stackoverflow;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Factorization {
+
+    public static class Pair {
+        long x, y;
+        public Pair(long x, long y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("[%d, %d]", x, y);
+        }
+    }
+
+    public static List<Pair> factorize(long n) {
+        List<Pair> ans = new ArrayList<Pair>();
+        for (long i = 2; i * i <= n; ++i) {
+            int t = 0;
+            while (n % i == 0) {
+                n /= i;
+                t++;
+            }
+            if (t > 0)
+                ans.add(new Pair(i, t));
+        }
+        if (n > 1)
+            ans.add(new Pair(n, 1));
+        return ans;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(factorize(24)); // [[2, 3], [3, 1]]
+    }
+}
