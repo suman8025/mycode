@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int minDepth(TreeNode* root) {
+     if(root==NULL)
+         return 0;
+        queue<TreeNode*> q;
+        q.push(root);
+        int i=0;
+        int maxi=INT_MIN,mini=INT_MAX;
+        while(!q.empty())
+        {
+            int qsize=q.size();
+            i++;
+            while(qsize>0)
+            {
+                TreeNode* temp=q.front();
+                q.pop();
+                if(temp->left)
+                    q.push(temp->left);
+                if(temp->right)
+                    q.push(temp->right);
+                if(temp->left==NULL && temp->right==NULL)
+                   {
+                     if(i < mini)
+                         mini=i;
+                      if(i > maxi)
+                          maxi=i;
+                    }
+                qsize--;
+            }
+        }
+        return maxi-mini;
+    }
+  
+};
