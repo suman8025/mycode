@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+   int minTaps(int n, vector<int>& ranges) {
+       int a[n+1];
+        for(int i=1;i<=n;i++)
+            a[i]=0;
+       for(int i=1;i<=n;i++)
+       {
+           a[max(1,i-ranges[i])]=max(a[max(1,i-ranges[i])],min(n,i+ranges[i]));
+       }
+        int curr=1,count=-1,next_cur=1;
+        for(int i=1;i<=curr;i++)
+        {
+            next_cur=max(next_cur,a[i]);
+            if(i==curr)
+            {
+                curr=next_cur;
+                count++;
+            }
+        }
+
+        if(curr==n)
+            return count;
+        return -1;
+    }
+int main() {
+    int n;
+    cin>>n;
+    vector<int> range(n+1,0);
+    for(int i=1;i<=n;i++)
+        cin>>range[i];
+    cout<<minTaps(n, range);
+	return 0;
+}
