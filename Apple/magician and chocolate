@@ -1,0 +1,18 @@
+#define m 1000000007
+int Solution::nchoc(int A, vector<int> &B) {
+int n=B.size();
+priority_queue<int> pq;
+for(int i=0;i<n;i++)
+pq.push(B[i]);
+int count=0;
+long sol=0;
+while(count<A)
+{
+    int t=pq.top();
+    pq.pop();
+    sol=(sol+t)%m;
+    pq.push(floor(t/2));
+    count++;
+}
+ return sol;
+}
