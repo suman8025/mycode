@@ -1,0 +1,26 @@
+int bestTrio(int n,vector<int> a , vector<int> b){
+ 
+	vector<vector<int>> graph(n,vector<int>(n,false));
+	vector<int> degree(n);
+ 
+	for(int i=0;i<(int)a.size();i++){
+		int u=a[i]-1, v=b[i]-1; 
+		graph[u][v]=true;
+		graph[v][u]=true;
+		degree[u]++;
+		degree[v]++;
+	}
+ 
+ 
+	int res=INT_MAX;
+	for(int i=0;i<n;i++){
+		for(int j=i+1;j<n;j++){
+			for(int k=j+1;k<n;k++){
+				if( graph[i][k] && graph[j][k] && graph[i][j] ){
+					res=min(res, degree[i]+degree[j] + degree[k]  - 6 );
+				}
+			}
+		}
+	}
+	return (res==INT_MAX?-1:res);
+}
