@@ -1,0 +1,142 @@
+#include <bits/stdc++.h>
+#include <math.h>
+#define MAX 4000000
+using namespace std;
+long tree[MAX] = {0};
+long lz[MAX] = {0};
+void uprl(long si, long ss, long se, long us,
+					long ue, long diff)
+{
+
+	if (lz[si] != 0)
+	{
+
+		tree[si] += (se-ss+1)*lz[si];
+		if (ss != se)
+		{
+			lz[si*2 + 1] += lz[si];
+			lz[si*2 + 2] += lz[si];
+		}
+		lz[si] = 0;
+	}
+	if (ss>se || ss>ue || se<us)
+		return ;
+
+	if (ss>=us && se<=ue)
+	{
+		tree[si] += (se-ss+1)*diff;
+		if (ss != se)
+		{
+			lz[si*2 + 1] += diff;
+			lz[si*2 + 2] += diff;
+		}
+		return;
+	}
+
+	long mid = (ss+se)/2;
+	uprl(si*2+1, ss, mid, us, ue, diff);
+	uprl(si*2+2, mid+1, se, us, ue, diff);
+	tree[si] = tree[si*2+1] + tree[si*2+2];
+}
+
+void ur(long n, long us, long ue, long diff)
+{
+uprl(0, 0, n-1, us, ue, diff);
+}
+
+
+long gsu(long ss, long se, long qs, long qe, long si)
+{
+
+	if (lz[si] != 0)
+	{
+
+		tree[si] += (se-ss+1)*lz[si];
+		if (ss != se)
+		{
+
+			lz[si*2+1] += lz[si];
+			lz[si*2+2] += lz[si];
+		}
+		lz[si] = 0;
+	}
+
+	if (ss>se || ss>qe || se<qs)
+		return 0;
+	if (ss>=qs && se<=qe)
+		return tree[si];
+
+	long mid = (ss + se)/2;
+	return gsu(ss, mid, qs, qe, 2*si+1) +
+		gsu(mid+1, se, qs, qe, 2*si+2);
+}
+
+long gs(long n, long qs, long qe)
+{
+	if (qs < 0 || qe > n-1 || qs > qe)
+	{
+
+		return -1;
+	}
+
+	return gsu(0, n-1, qs, qe, 0);
+}
+
+void cnstu(long arr[], long ss, long se, long si)
+{
+
+	if (ss > se)
+		return ;
+	if (ss == se)
+	{
+		tree[si] = arr[ss];
+		return;
+	}
+
+	long mid = (ss + se)/2;
+	cnstu(arr, ss, mid, si*2+1);
+	cnstu(arr, mid+1, se, si*2+2);
+
+	tree[si] = tree[si*2 + 1] + tree[si*2 + 2];
+}
+
+void cnst(long arr[], long n)
+{
+	cnstu(arr, 0, n-1, 0);
+}
+
+int main()
+{
+	long n,q;
+    cin>>n>>q;
+    long a[n];
+    for(long i=0;i<n;i++)
+        a[i]=0;
+    cnst(a, n);
+    for(long i=0;i<q;i++)
+    {
+        long p;
+        cin>>p;
+        if(!p)
+        {
+            long l,r,w;
+            cin>>l>>r>>w;
+            ur(n, l-1, r-1,w);
+        }
+        else
+        {
+
+            long val,k=0;
+            cin>>val;
+            while(k<n)
+            {
+                if(gs(n, 0, k)>=val)
+                    break;
+                k++;
+            }
+            cout<<k+1<<endl;
+        }
+
+    }
+	return 0;
+}
