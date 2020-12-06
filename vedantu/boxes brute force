@@ -1,0 +1,39 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int n, q;
+    cin>>n>>q;
+    vector<int>a(n+1, 0);
+    while(q--){
+        int x;
+        cin>>x;
+        if(x == 0){
+            int l, r, val1;
+            cin>>l>>r>>val1;
+            for(int i = l; i <= r; i++){
+                a[i] = a[i]+ val1;
+
+            }
+        }
+        else if(x == 1){
+            long long val2;
+            cin>>val2;
+            bool flag = false;
+            long long count = 0;
+            for(int i = 1; i <= n; i++){
+                count+=a[i];
+
+                if(val2 <= count){
+                    cout<<i<<endl;
+                    flag = true;
+                    break;
+                }
+            }
+            if(!flag){
+                cout<<n+1<<endl;
+            }
+        }
+    }
+    return 0;
+}
