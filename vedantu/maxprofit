@@ -1,0 +1,44 @@
+
+#include<bits/stdc++.h>
+
+using namespace std;
+
+int main()
+
+{
+
+	int n;
+
+	cin>>n;
+
+	int arr[1005],md[1005]={0},mvarrlue=0;
+
+	for(int i=1;i<=n;i++)cin>>arr[i];
+
+	for(int i=1;i<=n;i++)
+
+	{
+
+		int myarrns=0;
+
+		for(int j=1;j<i;j++)
+
+		{
+
+			if(arr[i]%arr[j] == 0)
+
+				myarrns=max(myarrns,md[j]);
+
+		}
+
+		md[i]=myarrns+arr[i];
+
+		mvarrlue=max(mvarrlue,md[i]);
+
+	}
+
+	cout<<mvarrlue<<"\n";
+
+	return 0;
+}
+
